@@ -1,6 +1,10 @@
 #include "rw_WinMacBasic.h"
 #include "string.h"
 
+#if JUCE_WINDOWS
+#include <Windows.h>
+#endif
+
 using namespace juce;
 
 wchar_t *rw_wcscpy(wchar_t *ptarget, int maxbuf, const wchar_t *source)
@@ -33,5 +37,26 @@ FILE *rw_fopen(const wchar_t *filename, const wchar_t *mode)
 	String strmode(mode);
 
 	return fopen(strname.toUTF8(), strmode.toUTF8());
+#endif
+}
+
+void rw_GetExecutablePath(wchar_t *appname, int maxbuf)
+{
+#if JUCE_WINDOWS
+	GetModuleFileName(NULL, appname, maxbuf);
+#endif
+#if JUCE_MAC
+	char buf[0];
+	uint32_t size = 0;
+	int res = _NSGetExecutablePath(buf, &size);
+
+	char* tmppath = (char*)malloc(size + 1);
+	tmppath[size] = 0;
+	res = _NSGetExecutablePath(tmppath, &size);
+
+	String tmppathstring = String::fromUTF8(tmppath);
+	//tmppathstring.copyToWchar_t(workPath, sizeof(workPath));
+	rw_wcscpy(appname, maxbuf, tmppathstring.towiderchar());
+	delete[] tmppath;
 #endif
 }

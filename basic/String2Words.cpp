@@ -1,23 +1,24 @@
-#include "String2Words.h"
-#include <string.h>
+ï»¿#include "String2Words.h"
+#include "rw_WinMacBasic.h"
 
-wchar_t defaultNotWordChars[] = {L",\t :"};
+const wchar_t defaultNotWordChars[] = {L",\t "};
 
 typedef struct
 {
-	int WordStart;//µ¥´ÊÔÚÕû¸ö×Ö·û´®ÖĞµÄ¿ªÊ¼
-	int WordLength;//µ¥´ÊµÄ³¤¶È
+	int WordStart;//å•è¯åœ¨æ•´ä¸ªå­—ç¬¦ä¸²ä¸­çš„å¼€å§‹
+	int WordLength;//å•è¯çš„é•¿åº¦
 }_WORDDES;
 
-wchar_t Comment[]={';'};//ÓÃÓÚ×¢ÊÍµÄ×Ö·û,Õâ¸ö×Ö·û¼°ºóÃæµÄ×Ö·û²»´¦Àí£¬¿ÉÒÔ¶¨Òå¶à¸ö
+const wchar_t defaultComment[]={';'};//ç”¨äºæ³¨é‡Šçš„å­—ç¬¦,è¿™ä¸ªå­—ç¬¦åŠåé¢çš„å­—ç¬¦ä¸å¤„ç†ï¼Œå¯ä»¥å®šä¹‰å¤šä¸ª
 
 CString2Words::CString2Words(void)
 {
     pNotWordCharStr = defaultNotWordChars;
-
+    pCommentCharStr = defaultComment;
 	WordsBuf = nullptr;
 	iWordsSplit = 0;
 	pWorkStringBuf = nullptr;
+    iCommontPos = -1;
 }
 
 void CString2Words::FreeMemory()
@@ -26,39 +27,68 @@ void CString2Words::FreeMemory()
 	{
 		for(int i=0;i<iWordsSplit;i++)
 		{
-			if(WordsBuf!=nullptr&&WordsBuf[i]!=nullptr)
-				delete [] WordsBuf[i];//ÒªÏÈÊÍ·Å×Ö·û´®ÄÚ´æ
+			if ((WordsBuf != NULL) && (WordsBuf[i] != NULL))
+			{
+				delete[] WordsBuf[i];//è¦å…ˆé‡Šæ”¾å­—ç¬¦ä¸²å†…å­˜
+				WordsBuf[i] = nullptr;
+			}
 		}
-		if(WordsBuf!=nullptr)
-			delete [] WordsBuf;//ÔÙÊÍ·Å¶ş¼¶Ö¸Õë.
-		WordsBuf=nullptr;
+		if (WordsBuf != NULL)
+		{
+			delete[] WordsBuf;//å†é‡Šæ”¾äºŒçº§æŒ‡é’ˆ.
+			WordsBuf = nullptr;
+		}
+		WordsBuf=NULL;
 	}
 }
 
 CString2Words::~CString2Words(void)
 {
     FreeMemory();
-    if(pWorkStringBuf != nullptr)
+    if(pWorkStringBuf != NULL)
     {
         delete [] pWorkStringBuf;
-        pWorkStringBuf = nullptr;
+        pWorkStringBuf = NULL;
     }
 }
+
+#if 0
+void CString2Words::SetString(const char *line)
+{
+    wchar_t *tmpStringBuf;
+    int iLen = strlen(line)+1;
+
+    tmpStringBuf = new wchar_t[iLen];
+
+	MultiByteToWideChar(CP_ACP,
+		MB_PRECOMPOSED,
+		line,
+		iLen,
+		tmpStringBuf,
+		iLen);
+
+    SetString(tmpStringBuf);
+
+    delete [] tmpStringBuf;
+}
+#endif
 
 void CString2Words::SetString(const wchar_t *line)
 {
     int iLen = wcslen(line)+1;
-    if(pWorkStringBuf != nullptr)
+    if(pWorkStringBuf != NULL)
     {
         delete [] pWorkStringBuf;
-        pWorkStringBuf = nullptr;
+        pWorkStringBuf = NULL;
     }
     pWorkStringBuf = new wchar_t [iLen];
-	wcscpy_s(pWorkStringBuf,iLen,line);
+	rw_wcscpy(pWorkStringBuf,iLen,line);
+    iWordsSplit = 0;
+    iCommontPos = -1;
 }
 int CString2Words::SplitWords(int iWords2Split)
 {
-	if(pWorkStringBuf == nullptr)
+	if(pWorkStringBuf == NULL)
 	{
 		return STR_WORDS_MEM_ERROR;
 	}
@@ -74,16 +104,20 @@ int CString2Words::StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf)
 	int TotalWords;
 	int index;
 	int i;
-	_WORDDES *WordDeses = nullptr;
+	_WORDDES *WordDeses = NULL;
 
-	//Êıµ¥´ÊÊı
+	//æ•°å•è¯æ•°
 	i=0;//-Not In word
 	bool bInQuote = false;
 	TotalWords=0;
+    iCommontPos = -1;
 	for(index=0;;index++)
 	{
-		if(wcschr(Comment,int(S[index])))
+		if(wcschr(pCommentCharStr,int(S[index])))
+        {
+            iCommontPos = index;
 			break;
+        }
 		if(S[index] == '"')
 		{
 			bInQuote = !bInQuote;
@@ -121,24 +155,24 @@ int CString2Words::StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf)
 			}
 		}
 	}
-	//--Êıµ¥´Ê½áÊø
+	//--æ•°å•è¯ç»“æŸ
 //	plog->AddFormatString("TotalWords:%d\n",TotalWords);
 	if(Words==0)
-		return TotalWords;//Èç¹ûÒªÇó·ÖÀëµÄµ¥´ÊÊıÎªÁã,Ôò·µ»Øµ¥´ÊÊı
+		return TotalWords;//å¦‚æœè¦æ±‚åˆ†ç¦»çš„å•è¯æ•°ä¸ºé›¶,åˆ™è¿”å›å•è¯æ•°
 
 	if(TotalWords == 0)
 		return 0;
-	//--·ÖÀëµ¥´ÊÊı
-	if(TotalWords<Words)//-Èç¹ûÇëÇó·ÖÀëµÄµ¥´Ê´óÓÚ×Üµ¥´ÊÊı,·ÖÀëËùÓĞµÄµ¥´Ê
+	//--åˆ†ç¦»å•è¯æ•°
+	if(TotalWords<Words)//-å¦‚æœè¯·æ±‚åˆ†ç¦»çš„å•è¯å¤§äºæ€»å•è¯æ•°,åˆ†ç¦»æ‰€æœ‰çš„å•è¯
 	{
 		Words=TotalWords;//
 	}
 
-	WordDeses=new _WORDDES[Words];//¸÷¸öµ¥´ÊµÄÃèÊö
+	WordDeses=new _WORDDES[Words];//å„ä¸ªå•è¯çš„æè¿°
 
-	if(WordDeses==nullptr)
-		return STR_WORDS_MEM_ERROR;//·ÖÅäÄÚ´æ´íÎó
-	//»ñÈ¡µ¥´ÊÃèÊö
+	if(WordDeses==NULL)
+		return STR_WORDS_MEM_ERROR;//åˆ†é…å†…å­˜é”™è¯¯
+	//è·å–å•è¯æè¿°
 	i=0;//-Not In word
 	bInQuote = false;
 	TotalWords=0;
@@ -183,28 +217,28 @@ int CString2Words::StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf)
 			if(TotalWords>=Words)
 				break;
 
-			if(S[index]=='\0'||wcschr(Comment,int(S[index])))
+			if(S[index]=='\0'||wcschr(pCommentCharStr,int(S[index])))
 				break;
 		}
 	}
-	//--»ñÈ¡µ¥´ÊÃèÊö½áÊø
+	//--è·å–å•è¯æè¿°ç»“æŸ
 
-	if((*OutBuf)==nullptr)//Èç¹ûÄÚ´æÃ»ÓĞ·ÖÅä,Ôò·ÖÅäÄÚ´æ-Çë×¢ÒâÔÚÊ¹ÓÃÍê³ÉºóÊÍ·Å!!!
+	if((*OutBuf)==NULL)//å¦‚æœå†…å­˜æ²¡æœ‰åˆ†é…,åˆ™åˆ†é…å†…å­˜-è¯·æ³¨æ„åœ¨ä½¿ç”¨å®Œæˆåé‡Šæ”¾!!!
 	{
-		(*OutBuf)=new wchar_t * [Words];//·ÖÅäÖ¸ÕëÊı×é
-		if(*OutBuf==nullptr)
+		(*OutBuf)=new wchar_t * [Words];//åˆ†é…æŒ‡é’ˆæ•°ç»„
+		if(*OutBuf==NULL)
 		{
 			delete [] WordDeses;
 			return STR_WORDS_MEM_ERROR;
 		}
 		for(i=0;i<Words;i++)
 		{
-			(*OutBuf)[i]=new wchar_t [WordDeses[i].WordLength+1];//-·ÖÅä×Ö·û´®»º³åÇø
-			if((*OutBuf)[i]==nullptr)
+			(*OutBuf)[i]=new wchar_t [WordDeses[i].WordLength+1];//-åˆ†é…å­—ç¬¦ä¸²ç¼“å†²åŒº
+			if((*OutBuf)[i]==NULL)
 			{
 				for(Words=0;Words<i;Words++)
 				{
-					delete [] ((*OutBuf)[i]);//ÊÍ·ÅËùÓĞÒÑ¾­ÊÍ·ÅµÄÄÚ´æ
+					delete [] ((*OutBuf)[i]);//é‡Šæ”¾æ‰€æœ‰å·²ç»é‡Šæ”¾çš„å†…å­˜
 				}
 				delete [] *OutBuf;
 				delete [] WordDeses;
@@ -213,7 +247,7 @@ int CString2Words::StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf)
 		}
 	}
 
-	//°Ñ×Ö·û´®¿½±´µ½Ä¿±ê»º³åÇø
+	//æŠŠå­—ç¬¦ä¸²æ‹·è´åˆ°ç›®æ ‡ç¼“å†²åŒº
 	for(i=0;i<Words;i++)
 	{
 		for(index=WordDeses[i].WordStart;index<(WordDeses[i].WordStart+WordDeses[i].WordLength);index++)
@@ -223,7 +257,7 @@ int CString2Words::StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf)
 		(*OutBuf)[i][index-WordDeses[i].WordStart]=0;
 	}
 
-	delete [] WordDeses;//-ÊÍ·Åµ¥´ÊÃèÊöµÄÄÚ´æ
+	delete [] WordDeses;//-é‡Šæ”¾å•è¯æè¿°çš„å†…å­˜
 	return Words;
 }
 
@@ -233,12 +267,30 @@ const wchar_t *CString2Words::GetWord(int index)
 	{
 		return WordsBuf[index];
 	}
-	return nullptr;
+	return NULL;
+}
+
+const wchar_t *CString2Words::GetComment()
+{
+    if(iCommontPos < 0)
+    {
+        return NULL;
+    }
+    if(pWorkStringBuf == NULL)
+    {
+        return NULL;
+    }
+
+    return pWorkStringBuf+iCommontPos;
 }
 
 bool CString2Words::bInWord(wchar_t testVal)
 {
     if((testVal == '\0') || (testVal == '\r') || (testVal == '\n'))//
+    {
+        return false;
+    }
+    if(wcschr(pCommentCharStr,testVal))
     {
         return false;
     }
@@ -252,7 +304,12 @@ bool CString2Words::bInWord(wchar_t testVal)
     }
 }
 
-void CString2Words::SetNotInCharString(wchar_t *pNewNotInCharString)
+void CString2Words::SetNotInCharString(const wchar_t *pNewNotInCharString)
 {
     pNotWordCharStr = pNewNotInCharString;
+}
+
+void CString2Words::SetCommentCharString(const wchar_t *pNewCommentCharString)
+{
+    pCommentCharStr = pNewCommentCharString;
 }

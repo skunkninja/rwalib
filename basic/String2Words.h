@@ -9,6 +9,9 @@ public:
 	CString2Words(void);
 	~CString2Words(void);
 	//Set string to process.
+#if JUCE_WINDOWS
+    void SetString(const char *line);
+#endif
 	void SetString(const wchar_t *line);
 	//Split words.
 	//iWords2Split is words number to process
@@ -17,8 +20,12 @@ public:
 	
 	//Get word by index.
 	const wchar_t *GetWord(int index);
+    //Get the comment string;
+    const wchar_t *GetComment();
     //Set new string which contain all chars should not exist in a word.
-    void SetNotInCharString(wchar_t *pNewNotInCharString);
+    void SetNotInCharString(const wchar_t *pNewNotInCharString);
+    //Set comment start.
+    void SetCommentCharString(const wchar_t *pNewCommentCharString);
 protected:
 	int StringWords(const wchar_t *S,int Words,wchar_t ***OutBuf);
     bool bInWord(wchar_t testVal);
@@ -26,7 +33,9 @@ protected:
 	wchar_t *pWorkStringBuf;
 	wchar_t **WordsBuf;
     const wchar_t *pNotWordCharStr;
+    const wchar_t *pCommentCharStr;
 	int iWordsSplit;
+    int iCommontPos;
 };
 
 #endif

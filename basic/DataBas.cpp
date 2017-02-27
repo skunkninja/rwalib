@@ -1,11 +1,14 @@
+#if JUCE_WINDOWS
+#include "windows.h"
+#endif
 #include "DataBas.h"
 
 #define SWAP(A,B,t) (t)=(A);(A)=(B);(B)=(t);
 
-void LSB_MSB(uint32 &lData)
+void LSB_MSB(DWORD &lData)
 {
 	DWORD_UNION t;
-	uint8 swapByte;
+	BYTE swapByte;
 	t.dwordData = lData;
 
 	SWAP(t.byteData[0],t.byteData[3],swapByte);
@@ -13,10 +16,10 @@ void LSB_MSB(uint32 &lData)
 
 	lData = t.dwordData;
 }
-void LSB_MSB(uint16 &sData)
+void LSB_MSB(WORD &sData)
 {
 	WORD_UNION t;
-	uint8 swapByte;
+	BYTE swapByte;
 	t.dwordData = sData;
 
 	SWAP(t.byteData[0],t.byteData[1],swapByte);

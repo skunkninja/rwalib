@@ -1,6 +1,10 @@
 #include "ArgProc.h"
 #include <string.h>
 
+#if JUCE_MAC
+#include <wchar.h>
+#endif
+
 CArgProc::CArgProc(void)
 {
 	workArg.strType = nullptr;
@@ -28,7 +32,7 @@ void CArgProc::SetArgString(const wchar_t *pstr)
 	}
 
 	workArg.strType = new wchar_t [argLength+1];
-	wcscpy_s(workArg.strType,argLength+1,pstr);
+	rw_wcscpy(workArg.strType,argLength+1,pstr);
 	
 	if(workArg.strType[0] == '-')
 	{

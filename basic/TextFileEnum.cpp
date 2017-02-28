@@ -1,4 +1,5 @@
 #include "TextFileEnum.h"
+#include "rw_WinMacBasic.h"
 #include <string.h>
 CTextFileEnum::CTextFileEnum()
 {
@@ -30,7 +31,7 @@ int CTextFileEnum::LoadTextFile(const wchar_t *unicodeFileName)
 		fclose(fpText);
 		fpText = NULL;
 	}
-	if(_wfopen_s(&fpText,unicodeFileName,L"rt") != 0)
+	if((fpText = rw_fopen(unicodeFileName,L"rt")) == NULL)
 	{
 		return 1;
 	}

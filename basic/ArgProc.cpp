@@ -5,6 +5,8 @@
 #include <wchar.h>
 #endif
 
+#include "rw_WinMacBasic.h"
+
 CArgProc::CArgProc(void)
 {
 	workArg.strType = nullptr;

@@ -13,13 +13,23 @@ using namespace juce;
 
 wchar_t *rw_wcscpy(wchar_t *ptarget, int maxbuf, const wchar_t *source)
 {
+#if JUCE_WINDOWS
+    return wcscpy_s(ptarget, maxbuf, source);
+#endif
+#if JUCE_MAC
     return wcscpy(ptarget, source);
+#endif
 }
 
 
 wchar_t *rw_wcscat(wchar_t *ptarget, int maxbuf, const wchar_t *source)
 {
+#if JUCE_WINDOWS
+    return wcscat_s(ptarget, maxbuf, source);
+#endif
+#if JUCE_MAC
     return wcscat(ptarget, source);
+#endif
 }
 
 

@@ -1,27 +1,25 @@
-#ifndef ARG_PROC_HEAD
+ï»¿#ifndef ARG_PROC_HEAD
 #define ARG_PROC_HEAD
 
-//²ÎÊý´¦ÀíÀà:
-//ÓÃÓÚ´¦ÀíÀàËÆÓÚ -arg:val µÄ²ÎÊý,Ê¹ÓÃÊ±½«²ÎÊý×Ö´®´«µÝ¹ýÀ´,Õâ¸öÀà»á×Ô¶¯½øÐÐ·ÖÀë£¬ÅÐ¶Ï¡£
-/*Ê¾Àý
+//å‚æ•°å¤„ç†ç±»:
+//ç”¨äºŽå¤„ç†ç±»ä¼¼äºŽ -arg:val çš„å‚æ•°,ä½¿ç”¨æ—¶å°†å‚æ•°å­—ä¸²ä¼ é€’è¿‡æ¥,è¿™ä¸ªç±»ä¼šè‡ªåŠ¨è¿›è¡Œåˆ†ç¦»ï¼Œåˆ¤æ–­ã€‚
+/*ç¤ºä¾‹
 CArgProc arg;
-if(argc > 1) //ÃüÁîÐÐÏÂ,²ÎÊý´óÓÚ1
+if(argc > 1) //å‘½ä»¤è¡Œä¸‹,å‚æ•°å¤§äºŽ1
 {
 	for(i = 1;i < argc;i++)
 	{
 		arg.SetArgString(argv[i]);
-		if(arg.IsArgument())//ÊÇ²ÎÊý
+		if(arg.IsArgument())//æ˜¯å‚æ•°
 		{
-			if(_wcsicmp(arg.GetArgument(),_T("-w")) == 0)//²ÎÊý¹Ø¼ü×Ö
+			if(_wcsicmp(arg.GetArgument(),_T("-w")) == 0)//å‚æ•°å…³é”®å­—
 			{
-				if(arg.GetValue() != NULL)//ÓÐ²ÎÊýÖµ
+				if(arg.GetValue() != NULL)//æœ‰å‚æ•°å€¼
 				{
 				}
 			.......
 }
-
-
-/**/
+*/
 
 typedef struct ARG_DEF
 {

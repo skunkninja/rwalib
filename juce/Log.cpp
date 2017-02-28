@@ -6,6 +6,8 @@
 #include "windows.h"
 #endif
 
+#include "rw_WinMacBasic.h"
+
 CLog::CLog(void)
 {
 #if LOG_FILE
@@ -43,10 +45,9 @@ int CLog::SetLogFileName(const wchar_t *filename,bool clearold)
 		fclose(fpt);
 		fpt = NULL;
 	}
-	wcscpy_s(FileName,numElementsInArray(FileName),filename);
-	if(_wfopen_s(&fpt,FileName,L"wt") != 0)
+	rw_wcscpy(FileName,numElementsInArray(FileName),filename);
+	if((fpt = rw_fopen(FileName,L"wt")) == NULL)
 	{
-		fpt = NULL;//失败
 		return 1;
 	}
 	return 0;
@@ -78,7 +79,7 @@ int CLog::AddLogString(wchar_t *newLog)
 	{
 		int len = wcslen(newLog);
 		wchar_t *pLog = new wchar_t[len+1];
-		wcscpy_s(pLog,len+1,newLog);
+		rw_wcscpy(pLog,len+1,newLog);
 		localEditor->AddLog(pLog);
 	}
 #endif
@@ -90,9 +91,12 @@ int CLog::AddFormatString(const wchar_t* _Format, ...)
 	wchar_t buff[1024];
 	va_list vl;
 	va_start (vl, _Format);
-
+#if JUCE_WINDOWS
 	_vsnwprintf_s(buff, numElementsInArray(buff),numElementsInArray(buff)-1, _Format, vl);
-
+#endif
+#if JUCE_MAC
+    vswprintf(buff, numElementsInArray(buff), _Format, vl);
+#endif
 	return AddLogString(buff);
 }
 
@@ -111,6 +115,7 @@ int CLog::AddFormatString(const char* _Format, ...)
 	va_list vl;
 	va_start (vl, _Format);
 
+#if JUCE_WINDOWS
 	_vsnprintf_s(buff, numElementsInArray(buff),numElementsInArray(buff)-1, _Format, vl);
 
 	MultiByteToWideChar(CP_ACP,
@@ -119,6 +124,13 @@ int CLog::AddFormatString(const char* _Format, ...)
 		strlen(buff)+1,
 		unicodebuf,
 		numElementsInArray(unicodebuf));
+#endif
+#if JUCE_MAC
+    vsnprintf(buff, numElementsInArray(buff), _Format, vl);
+    
+    String tmpString = String::fromUTF8(buff);
+    rw_wcscpy(unicodebuf, numElementsInArray(unicodebuf), tmpString.toWideCharPointer());
+#endif
 	return AddLogString(unicodebuf);
 }
 

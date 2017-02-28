@@ -5,6 +5,10 @@
 #include <Windows.h>
 #endif
 
+#if JUCE_MAC
+#include <mach-o/dyld.h>
+#endif
+
 using namespace juce;
 
 wchar_t *rw_wcscpy(wchar_t *ptarget, int maxbuf, const wchar_t *source)
@@ -21,8 +25,8 @@ wchar_t *rw_wcscat(wchar_t *ptarget, int maxbuf, const wchar_t *source)
 
 FILE *rw_fopen(const wchar_t *filename, const wchar_t *mode)
 {
-	FILE *fp;
 #if JUCE_WINDOWS
+    FILE *fp;
 	if (_wfopen_s(&fp, filename, mode) == 0)
 	{
 		return fp;
@@ -56,7 +60,7 @@ void rw_GetExecutablePath(wchar_t *appname, int maxbuf)
 
 	String tmppathstring = String::fromUTF8(tmppath);
 	//tmppathstring.copyToWchar_t(workPath, sizeof(workPath));
-	rw_wcscpy(appname, maxbuf, tmppathstring.towiderchar());
+	rw_wcscpy(appname, maxbuf, tmppathstring.toWideCharPointer());
 	delete[] tmppath;
 #endif
 }

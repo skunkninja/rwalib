@@ -28,8 +28,10 @@ public:
 	~CLog(void);
 	//增加一个标准的log串
 	int AddLogString(wchar_t *newLog);
-	//增加一个unicode格式串
+
+    //增加一个unicode格式串
 	int AddFormatString(const wchar_t* _Format, ...);
+
 	//增加一个ansi格式串
 	int AddFormatString(const char* _Format, ...);
 	//清除log(对文件log暂时无效果)

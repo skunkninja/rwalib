@@ -78,7 +78,7 @@ public:
 	//重采样,只是使用DSP中所使用的数据表示方法
 	bool Resample(unsigned int iDspRate);//resample wave file use dsp rate.( 0xII FFFF)
 	//保存wave文件
-	int SaveWave(wchar_t *strWaveName);
+	int SaveWave(const wchar_t *strWaveName);
 	//获取采样率
 	int GetSampleRate();
 

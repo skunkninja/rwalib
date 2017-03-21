@@ -85,7 +85,7 @@ int CWaveFile::LoadWave(wchar_t *strWaveName)
 			if (localWaveHead.WaveChunk.wChannel < 3)//only support mono or stereo.
 			{
 				fseek(fpb, localWaveHead.WaveChunk.fLen - 0x10, SEEK_CUR);
-				while (1)
+				for (;;)
 				{
 					if (fread(&WaveData, sizeof(WaveData), 1, fpb) == 0)
 					{
@@ -313,7 +313,7 @@ bool CWaveFile::Resample(unsigned int iDspRate)
 	return Resample(fRate);
 }
 //save wave file
-int CWaveFile::SaveWave(wchar_t *strWaveName)
+int CWaveFile::SaveWave(const wchar_t *strWaveName)
 {
 	int i,j;
 	FILE *fpb;

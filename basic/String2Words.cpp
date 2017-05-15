@@ -9,7 +9,7 @@ typedef struct
 	int WordLength;//单词的长度
 }_WORDDES;
 
-const wchar_t defaultComment[]={';'};//用于注释的字符,这个字符及后面的字符不处理，可以定义多个
+const wchar_t defaultComment[]={L";"};//用于注释的字符,这个字符及后面的字符不处理，可以定义多个
 
 CString2Words::CString2Words(void)
 {

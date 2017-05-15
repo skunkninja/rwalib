@@ -21,7 +21,221 @@
 #define SGI_FILE_EG23_CONVERT_MAJOR  1 //<=
 #define SGI_FILE_EG23_CONVERT_MINOR  3 //<=
 
-void initSplitInfo(SPLIT_INFO &splitInfo);
+void initSplitInfo(SPLIT_INFO &splitInfo)
+{
+	//Basic info
+	splitInfo.BasicInfo.bSelect = false;
+	splitInfo.BasicInfo.iStartKey = 0;
+	splitInfo.BasicInfo.iEndKey = 0;
+	splitInfo.BasicInfo.iEndKeyMin = 0;
+	splitInfo.BasicInfo.iEndKeyMax = 0;
+	splitInfo.BasicInfo.iStartKeyMin = 0;
+	splitInfo.BasicInfo.iStartKeyMax = 0;
+
+	splitInfo.BasicInfo.vStartVel.setValue(1);
+	splitInfo.BasicInfo.vStartVel.setRange(1, 127);
+
+	splitInfo.BasicInfo.vEndVel.setValue(127);
+	splitInfo.BasicInfo.vEndVel.setRange(1, 127);
+
+	//EG1
+	splitInfo.EG1Info.vEG1Level.setValue(255);
+	splitInfo.EG1Info.vEG1Level.setRange(0, 255);
+
+	splitInfo.EG1Info.vEG1Rate.setValue(127);
+
+	splitInfo.EG1Info.vEG2Level.setValue(255);
+	splitInfo.EG1Info.vEG2Level.setRange(0, 255);
+
+	splitInfo.EG1Info.vEG2Rate.setValue(120);
+
+	splitInfo.EG1Info.vEG3Level.setValue(255);
+	splitInfo.EG1Info.vEG3Level.setRange(0, 255);
+
+	splitInfo.EG1Info.vEG3Rate.setValue(50);
+
+	splitInfo.EG1Info.vEG4Level.setValue(0);
+	splitInfo.EG1Info.vEG4Level.setRange(0, 255);
+
+	splitInfo.EG1Info.vEG4Rate.setValue(110);
+
+	splitInfo.EG1Info.vEG4SLevel.setValue(0);
+	splitInfo.EG1Info.vEG4SLevel.setRange(0, 255);
+
+	splitInfo.EG1Info.vEG4SRate.setValue(60);
+
+	splitInfo.EG1Info.vInitVal.setValue(255);
+	splitInfo.EG1Info.vInitVal.setRange(0, 255);
+
+	splitInfo.EG1Info.iKeyOffType = KEY_OFF_PEDAL_HOLD;
+
+	//EG2
+	splitInfo.EG2Info.vEG1Level.setValue(0);
+	splitInfo.EG2Info.vEG1Level.setRange(0, 255);
+
+	splitInfo.EG2Info.vEG1Rate.setValue(0);
+
+	splitInfo.EG2Info.vEG2Level.setValue(0);
+	splitInfo.EG2Info.vEG2Level.setRange(0, 255);
+
+	splitInfo.EG2Info.vEG2Rate.setValue(0);
+
+	splitInfo.EG2Info.vEG3Level.setValue(0);
+	splitInfo.EG2Info.vEG3Level.setRange(0, 255);
+
+	splitInfo.EG2Info.vEG3Rate.setValue(0);
+
+	splitInfo.EG2Info.vEG4Level.setValue(0);
+	splitInfo.EG2Info.vEG4Level.setRange(0, 255);
+
+	splitInfo.EG2Info.vEG4Rate.setValue(0);
+
+	splitInfo.EG2Info.vEG4SLevel.setValue(0);
+	splitInfo.EG2Info.vEG4SLevel.setRange(0, 255);
+
+	splitInfo.EG2Info.vEG4SRate.setValue(0);
+
+	splitInfo.EG2Info.vInitVal.setValue(0);
+	splitInfo.EG2Info.vInitVal.setRange(0, 255);
+
+	//EG3
+	splitInfo.EG3Info.vEG1Level.setValue(128);
+	splitInfo.EG3Info.vEG1Level.setRange(0, 255);
+
+	splitInfo.EG3Info.vEG1Rate.setValue(90);
+
+	splitInfo.EG3Info.vEG2Level.setValue(128);
+	splitInfo.EG3Info.vEG2Level.setRange(0, 255);
+
+	splitInfo.EG3Info.vEG2Rate.setValue(127);
+
+	splitInfo.EG3Info.vEG3Level.setValue(128);
+	splitInfo.EG3Info.vEG3Level.setRange(0, 255);
+
+	splitInfo.EG3Info.vEG3Rate.setValue(127);
+
+	splitInfo.EG3Info.vEG4Level.setValue(128);
+	splitInfo.EG3Info.vEG4Level.setRange(0, 255);
+
+	splitInfo.EG3Info.vEG4Rate.setValue(127);
+
+	splitInfo.EG3Info.vEG4SLevel.setValue(128);
+	splitInfo.EG3Info.vEG4SLevel.setRange(0, 255);
+
+	splitInfo.EG3Info.vEG4SRate.setValue(127);
+
+	splitInfo.EG3Info.vInitVal.setValue(0);
+	splitInfo.EG3Info.vInitVal.setRange(0, 255);
+
+	splitInfo.KBDInfo1.iActiveNode = 0;
+	splitInfo.KBDInfo1.allNodeList.push_back({ 0, 0 });
+	splitInfo.KBDInfo1.allNodeList.push_back({ 127, 0 });
+
+	splitInfo.KBDInfo2.iActiveNode = 0;
+	splitInfo.KBDInfo2.allNodeList.push_back({ 0, 0 });
+	splitInfo.KBDInfo2.allNodeList.push_back({ 127, 0 });
+
+	splitInfo.LFO1Info.vAttack.setValue(0);
+	splitInfo.LFO1Info.vDelay.setValue(0);
+	splitInfo.LFO1Info.vFreq.setValue(0);
+	splitInfo.LFO1Info.iType = 1;
+	splitInfo.LFO2Info.vAttack.setValue(0);
+	splitInfo.LFO2Info.vDelay.setValue(0);
+	splitInfo.LFO2Info.vFreq.setValue(0);
+	splitInfo.LFO2Info.iType = 1;
+	//splitInfo.waveGen.cWaveName =NULL;
+	splitInfo.waveGen.bEg3Enable = 0;
+	splitInfo.waveGen.vUserCTune.setValue(0);
+	splitInfo.waveGen.vUserCTune.setRange(-127, 127);
+
+	splitInfo.waveGen.vEg3Amount.setValue(0);
+	splitInfo.waveGen.vEg3Amount.setRange(0, 31);
+
+	splitInfo.waveGen.vUserFTune.setValue(0);
+	splitInfo.waveGen.vUserFTune.setRange(0, 255);
+
+	splitInfo.waveGen.iKbdType = 0;
+	splitInfo.waveGen.vLfoAmount.setValue(0);
+	splitInfo.waveGen.iLoopEnd = 0;
+	splitInfo.waveGen.iLoopLength = 0;
+	splitInfo.waveGen.iLoopmode = 0;
+	splitInfo.waveGen.iLoopStart = 0;
+	splitInfo.waveGen.iSampleBit = 0;
+	splitInfo.waveGen.iSampleLen = 0;
+	splitInfo.waveGen.iWaveStart = 0;
+
+	splitInfo.filter.bKbdTable = false;
+	splitInfo.filter.iKbdTableNum = 0;
+	splitInfo.filter.bEg2 = false;
+	splitInfo.filter.bLfo2 = false;
+
+	splitInfo.filter.bOffset = false;
+	splitInfo.filter.bFcDynamic = false;
+	splitInfo.filter.bQDynamic = false;
+	splitInfo.filter.iFilterType = 0;
+	splitInfo.filter.iFilterSlope = 0;
+
+	splitInfo.filter.vFcDynOffset.setValue(64);
+	splitInfo.filter.vFcDynOffset.setRange(-127, 127);
+
+	splitInfo.filter.vFcDynSlope.setValue(0);
+	splitInfo.filter.vFcDynSlope.setRange(-2.0f, 1.75f);
+
+	splitInfo.filter.vFc.setValue(127);
+
+	splitInfo.filter.vQAmpulitude.setValue(0);
+
+	splitInfo.filter.iFilterType = 1;
+	splitInfo.filter.iFilterSlope = 0;
+
+	splitInfo.filter.vQDynOffset.setValue(0);
+	splitInfo.filter.vQDynOffset.setRange(-127, 127);
+
+	splitInfo.filter.vQDynSlope.setValue(0);
+	splitInfo.filter.vQDynSlope.setRange(-2.0f, 1.75f);
+
+	splitInfo.outamp.iVolume = 0;
+	splitInfo.outamp.bKbdTable = false;
+	splitInfo.outamp.iKbdTableNum = 0;
+	splitInfo.outamp.bEg1 = false;
+	splitInfo.outamp.bLfo2 = false;
+	splitInfo.outamp.bOffset = false;
+	splitInfo.outamp.iOffset = 0;
+	splitInfo.outamp.bDynamic = false;
+
+	splitInfo.outamp.vMixL.setValue(100);
+	splitInfo.outamp.vMixR.setValue(100);
+
+	splitInfo.outamp.vFX1Vol.setValue(127);
+	splitInfo.outamp.vFX2Vol.setValue(127);
+	splitInfo.outamp.vFX3Vol.setValue(127);
+	splitInfo.outamp.vFX4Vol.setValue(127);
+
+	splitInfo.outamp.vDynOffset.setValue(0);
+	splitInfo.outamp.vDynOffset.setRange(-127, 127);
+
+	splitInfo.outamp.vDynSlope.setValue(1);
+	splitInfo.outamp.vDynSlope.setRange(-2.0f, 1.75f);
+
+	splitInfo.sampleAmp.bKbdTable = false;
+	splitInfo.sampleAmp.iKbdTableNum = 0;
+	splitInfo.sampleAmp.bDynamic = false;
+
+	splitInfo.sampleAmp.vAmplitude.setValue(255);
+	splitInfo.sampleAmp.vAmplitude.setRange(0, 255);
+
+	splitInfo.sampleAmp.vDynOffset.setValue(64);
+	splitInfo.sampleAmp.vDynOffset.setRange(-127, 127);
+
+	splitInfo.sampleAmp.vDynSlope.setValue(0);
+	splitInfo.sampleAmp.vDynSlope.setRange(-2.0f, 1.75f);
+
+	splitInfo.bReadOnly = false;
+
+	splitInfo.iSaveOffset = 0;
+}
+
+
 
 CSgiLoad::CSgiLoad(void)
 {

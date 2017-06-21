@@ -1,4 +1,4 @@
-#include "rw_WinMacBasic.h"
+﻿#include "rw_WinMacBasic.h"
 #include "string.h"
 
 #if JUCE_WINDOWS
@@ -11,15 +11,25 @@
 
 using namespace juce;
 
-wchar_t *rw_wcscpy(wchar_t *ptarget, int maxbuf, const wchar_t *source)
+wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
+#if JUCE_WINDOWS
+    return wcscpy_s(ptarget, wcharsize, source);
+#endif
+#if JUCE_MAC
     return wcscpy(ptarget, source);
+#endif
 }
 
 
-wchar_t *rw_wcscat(wchar_t *ptarget, int maxbuf, const wchar_t *source)
+wchar_t *rw_wcscat(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
+#if JUCE_WINDOWS
+    return wcscat(ptarget, wcharsize, source);
+#endif
+#if JUCE_MAC
     return wcscat(ptarget, source);
+#endif
 }
 
 

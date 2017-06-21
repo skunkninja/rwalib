@@ -14,7 +14,14 @@ using namespace juce;
 wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
 #if JUCE_WINDOWS
-    return wcscpy_s(ptarget, wcharsize, source);
+	if (wcscpy_s(ptarget, wcharsize, source) == 0)
+	{
+		return ptarget;
+	}
+	else
+	{
+		return nullptr;
+	}
 #endif
 #if JUCE_MAC
     return wcscpy(ptarget, source);
@@ -25,7 +32,14 @@ wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 wchar_t *rw_wcscat(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
 #if JUCE_WINDOWS
-    return wcscat(ptarget, wcharsize, source);
+	if (wcscat_s(ptarget, wcharsize, source) == 0)
+	{
+		return ptarget;
+	}
+	else
+	{
+		return nullptr;
+	}
 #endif
 #if JUCE_MAC
     return wcscat(ptarget, source);

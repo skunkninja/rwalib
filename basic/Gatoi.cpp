@@ -1,5 +1,8 @@
-﻿#include <string.h>
+#include <string.h>
 #include "rw_WinMacBasic.h"
+#if JUCE_MAC
+#include <wchar.h>
+#endif
 
 int StringRadixChk(int radix,const wchar_t *source,wchar_t *Filtrate,bool CheckTail = false);
 //Gatio

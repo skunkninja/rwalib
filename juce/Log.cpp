@@ -1,4 +1,4 @@
-﻿#include "Log.h"
+#include "Log.h"
 #if LOG_STD_OUT
 #include "stdio.h"
 #endif
@@ -71,7 +71,7 @@ int CLog::AddLogString(wchar_t *newLog)
 #if LOG_FILE
 	if(fpt != NULL)
 	{
-		fwprintf(fpt,L"%s",newLog);
+		fwprintf(fpt,newLog);
 	}
 #endif
 #if LOG_EDITOR

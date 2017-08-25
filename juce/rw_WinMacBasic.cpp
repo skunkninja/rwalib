@@ -1,7 +1,7 @@
 ﻿#include "rw_WinMacBasic.h"
 #include "string.h"
 
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS || WIN32
 #include <Windows.h>
 #endif
 
@@ -9,11 +9,13 @@
 #include <mach-o/dyld.h>
 #endif
 
+#if JUCE_WINDOWS || JUCE_MAC
 using namespace juce;
+#endif
 
 wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS || WIN32
 	if (wcscpy_s(ptarget, wcharsize, source) == 0)
 	{
 		return ptarget;
@@ -31,7 +33,7 @@ wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 
 wchar_t *rw_wcscat(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 {
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS|| WIN32
 	if (wcscat_s(ptarget, wcharsize, source) == 0)
 	{
 		return ptarget;
@@ -49,7 +51,7 @@ wchar_t *rw_wcscat(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 
 FILE *rw_fopen(const wchar_t *filename, const wchar_t *mode)
 {
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS|| WIN32
     FILE *fp;
 	if (_wfopen_s(&fp, filename, mode) == 0)
 	{
@@ -70,7 +72,7 @@ FILE *rw_fopen(const wchar_t *filename, const wchar_t *mode)
 
 void rw_GetExecutablePath(wchar_t *appname, int maxbuf)
 {
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS || WIN32
 	GetModuleFileName(NULL, appname, maxbuf);
 #endif
 #if JUCE_MAC

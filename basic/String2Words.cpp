@@ -1,6 +1,10 @@
 ﻿#include "String2Words.h"
 #include "rw_WinMacBasic.h"
 
+#if WIN32 && !JUCE_WINDOWS
+#include <Windows.h>
+#endif
+
 const wchar_t defaultNotWordChars[] = {L",\t "};
 
 typedef struct
@@ -52,7 +56,7 @@ CString2Words::~CString2Words(void)
     }
 }
 
-#if 0
+#if JUCE_WINDOWS || WIN32
 void CString2Words::SetString(const char *line)
 {
     wchar_t *tmpStringBuf;

@@ -9,7 +9,7 @@ public:
 	CString2Words(void);
 	~CString2Words(void);
 	//Set string to process.
-#if JUCE_WINDOWS
+#if JUCE_WINDOWS || WIN32
     void SetString(const char *line);
 #endif
 	void SetString(const wchar_t *line);

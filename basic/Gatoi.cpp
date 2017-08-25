@@ -1,4 +1,4 @@
-#include <string.h>
+﻿#include <string.h>
 #include "rw_WinMacBasic.h"
 #if JUCE_MAC
 #include <wchar.h>

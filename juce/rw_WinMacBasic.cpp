@@ -5,11 +5,11 @@
 #include <Windows.h>
 #endif
 
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
 #include <mach-o/dyld.h>
 #endif
 
-#if JUCE_WINDOWS || JUCE_MAC
+#if (JUCE_WINDOWS || JUCE_MAC || JUCE_IOS)
 using namespace juce;
 #endif
 
@@ -25,7 +25,7 @@ wchar_t *rw_wcscpy(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 		return nullptr;
 	}
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
     return wcscpy(ptarget, source);
 #endif
 }
@@ -43,7 +43,7 @@ wchar_t *rw_wcscat(wchar_t *ptarget, int wcharsize, const wchar_t *source)
 		return nullptr;
 	}
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
     return wcscat(ptarget, source);
 #endif
 }
@@ -62,7 +62,7 @@ FILE *rw_fopen(const wchar_t *filename, const wchar_t *mode)
 		return nullptr;
 	}
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
 	String strname(filename);
 	String strmode(mode);
 
@@ -75,7 +75,7 @@ void rw_GetExecutablePath(wchar_t *appname, int maxbuf)
 #if JUCE_WINDOWS || WIN32
 	GetModuleFileName(NULL, appname, maxbuf);
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
 	char buf[0];
 	uint32_t size = 0;
 	int res = _NSGetExecutablePath(buf, &size);

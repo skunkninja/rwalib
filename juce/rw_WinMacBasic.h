@@ -1,7 +1,7 @@
 ﻿#ifndef STRING_BASIC_H
 #define STRING_BASIC_H
 
-#if JUCE_WINDOWS || JUCE_MAC
+#if (JUCE_WINDOWS || JUCE_MAC || JUCE_IOS)
 #include "../JuceLibraryCode/JuceHeader.h"
 #ifndef _MAX_PATH
 #define _MAX_PATH 1024

@@ -94,7 +94,7 @@ int CLog::AddFormatString(const wchar_t* _Format, ...)
 #if JUCE_WINDOWS
 	_vsnwprintf_s(buff, numElementsInArray(buff),numElementsInArray(buff)-1, _Format, vl);
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
     vswprintf(buff, numElementsInArray(buff), _Format, vl);
 #endif
 	return AddLogString(buff);
@@ -125,7 +125,7 @@ int CLog::AddFormatString(const char* _Format, ...)
 		unicodebuf,
 		numElementsInArray(unicodebuf));
 #endif
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
     vsnprintf(buff, numElementsInArray(buff), _Format, vl);
     
     String tmpString = String::fromUTF8(buff);

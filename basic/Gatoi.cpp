@@ -1,6 +1,6 @@
 ﻿#include <string.h>
 #include "rw_WinMacBasic.h"
-#if JUCE_MAC
+#if (JUCE_MAC || JUCE_IOS)
 #include <wchar.h>
 #endif
 
